@@ -1,5 +1,6 @@
 from flask import Flask
 from .routes import users, statistics  # 라우트 불러오기
+from app.routes.swagger import register_swagger
 from dotenv import load_dotenv
 from .extensions import db, jwt
 import os
@@ -22,6 +23,8 @@ def create_app():
     app.register_blueprint(users.bp)
     app.register_blueprint(statistics.bp)
 
+    register_swagger(app)
+    
     return app
 
 
