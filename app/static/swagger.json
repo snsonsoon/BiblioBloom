@@ -1,0 +1,227 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Flask API Documentation",
+    "description": "API documentation for user statistics and authentication endpoints"
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Endpoints related to user authentication"
+    },
+    {
+      "name": "Statistics",
+      "description": "Endpoints related to user statistics and data"
+    }
+  ],
+  "paths": {
+    "/signup": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "User Signup",
+        "description": "Create a new user account.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "string",
+                  "example": "example_user"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password123"
+                },
+                "nickname": {
+                  "type": "string",
+                  "example": "Example Nickname"
+                }
+              },
+              "required": ["user_id", "password", "nickname"]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Missing required fields"
+          },
+          "409": {
+            "description": "User ID already exists"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "User Login",
+        "description": "Authenticate a user and return a JWT token.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "string",
+                  "example": "example_user"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password123"
+                }
+              },
+              "required": ["user_id", "password"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "access_token": {
+                  "type": "string",
+                  "example": "jwt_token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required fields"
+          },
+          "401": {
+            "description": "Invalid credentials"
+          }
+        }
+      }
+    },
+    "/user-statistics": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "User Statistics",
+        "description": "Retrieve user statistics, including total reviews and rank percentage.",
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "JWT token. Format: Bearer {token}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Statistics retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "string"
+                },
+                "total_reviews": {
+                  "type": "integer",
+                  "example": 42
+                },
+                "rank_percentage": {
+                  "type": "number",
+                  "format": "float",
+                  "example": 90.5
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No statistics available for this user"
+          },
+          "401": {
+            "description": "Unauthorized. Token missing or invalid."
+          }
+        }
+      }
+    },
+    "/user-genre-ratios": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "User Genre Ratios",
+        "description": "Retrieve the ratio of genres reviewed by the user.",
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "JWT token. Format: Bearer {token}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Genre ratios retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "string"
+                },
+                "genre_ratios": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "genre": {
+                        "type": "string"
+                      },
+                      "ratio": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 45.6
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No genre data available for this user"
+          },
+          "401": {
+            "description": "Unauthorized. Token missing or invalid."
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "JWT token for authentication. Use 'Bearer {token}' format."
+    }
+  }
+}
