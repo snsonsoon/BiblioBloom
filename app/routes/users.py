@@ -1,51 +1,34 @@
-from flask import Blueprint, request, jsonify
-from app.extensions import db
-from app.models.users import User
-from flask_jwt_extended import create_access_token
+from fastapi import APIRouter, HTTPException, Depends, Response
+from sqlalchemy.orm import Session
+from ..database.connection import get_db
+from ..models import Users as UserModel
+from ..schemas.users import UserSignupRequest, UserLoginRequest
+from ..utils import hash_password, verify_password, create_access_token_cookie, remove_access_token_cookie
+from datetime import datetime, timedelta
 
-# Flask Blueprint
-bp = Blueprint('users', __name__)
+user_router = APIRouter(prefix='/user', tags=["User"])
 
-# 회원가입 API
-@bp.route('/signup', methods=['POST'])
-def signup():
-    data = request.get_json()
-    user_id = data.get('user_id')
-    password = data.get('password')
-    nickname = data.get('nickname')
+@user_router.post("/signup")
+async def signup(user: UserSignupRequest, db: Session = Depends(get_db)):
+    db_user = db.query(UserModel).filter(UserModel.user_id == user.user_id).first()
+    if db_user:
+        raise HTTPException(status_code=400, detail="User already registered")
+    hashed_password = hash_password(user.password)
+    new_user = UserModel(user_id=user.user_id, password=hashed_password, nickname=user.nickname)
+    db.add(new_user)
+    db.commit()
+    return {"message": "User successfully registered"}
 
-    # 필수 값 확인
-    if not user_id or not password or not nickname:
-        return jsonify({"error": "Missing required fields"}), 400
+@user_router.post("/login")
+async def login(form_data: UserLoginRequest, db: Session = Depends(get_db), response: Response = None):
+    user = db.query(UserModel).filter(UserModel.user_id == form_data.user_id).first()
+    if not user or not verify_password(form_data.password, user.password):
+        raise HTTPException(status_code=401, detail="Incorrect username or password")
+    expires_delta = timedelta(days=1)  # 1 day token expiration
+    token = create_access_token_cookie(response, {"sub": user.user_id}, expires_delta)
+    return {"access_token": token}
 
-    # 유저 중복 확인
-    if User.query.filter_by(user_id=user_id).first():
-        return jsonify({"error": "User ID already exists"}), 409
-
-    # 새로운 유저 생성
-    new_user = User(user_id=user_id, nickname=nickname)
-    new_user.set_password(password)  # 비밀번호 해시화
-    db.session.add(new_user)
-    db.session.commit()
-
-    return jsonify({"message": "User created successfully"}), 201
-
-# 로그인 API
-@bp.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    user_id = data.get('user_id')
-    password = data.get('password')
-
-    # 필수 값 확인
-    if not user_id or not password:
-        return jsonify({"error": "Missing required fields"}), 400
-
-    # 유저 검색
-    user = User.query.filter_by(user_id=user_id).first()
-    if not user or not user.check_password(password):
-        return jsonify({"error": "Invalid credentials"}), 401
-
-    # JWT 토큰 생성
-    access_token = create_access_token(identity=user_id)
-    return jsonify({"access_token": access_token}), 200
+@user_router.post("/logout")
+async def logout(response: Response):
+    remove_access_token_cookie(response)
+    return {"message": "Logged out successfully"}

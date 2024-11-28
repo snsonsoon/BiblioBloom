@@ -1,19 +1,17 @@
-from app.extensions import db
+from sqlmodel import SQLModel, Field
+from typing import Optional
 
-class UserStatisticsView(db.Model):
-    __tablename__ = 'UserStatistics'  # 기존 뷰
-    user_id = db.Column(db.String(50), primary_key=True)
-    total_reviews = db.Column(db.Integer)
-    average_rating = db.Column(db.Float)
+class BookStatistics(SQLModel, table=False):  # `table=False`로 설정하여 뷰로 사용
+    isbn: str = Field(primary_key=True, max_length=13)
+    average_rating: Optional[float] = Field(default=None)
+    total_reviews: Optional[int] = Field(default=None)
 
-class BookStatisticsView(db.Model):
-    __tablename__ = 'BookStatistics'  # 기존 뷰
-    isbn = db.Column(db.String(13), primary_key=True)
-    total_reviews = db.Column(db.Integer)
-    average_rating = db.Column(db.Float)
+class UserStatistics(SQLModel, table=False):  # `table=False`로 설정하여 뷰로 사용
+    user_id: str = Field(primary_key=True, max_length=50)
+    average_rating: Optional[float] = Field(default=None)
+    total_reviews: Optional[int] = Field(default=None)
 
-class UserReviewGenres(db.Model):
-    __tablename__ = 'UserReviewGenres'  # 새로운 뷰 생성 필요
-    user_id = db.Column(db.String(50), primary_key=True)
-    genre = db.Column(db.String(50), primary_key=True)
-    review_count = db.Column(db.Integer)
+class UserReviewGenres(SQLModel, table=False):  # `table=False`로 설정하여 뷰로 사용
+    user_id: str = Field(primary_key=True, max_length=50)
+    genre: str = Field(primary_key=True, max_length=50)
+    review_count: Optional[int] = Field(default=None)
