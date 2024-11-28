@@ -1,0 +1,9 @@
+.logo.large img {
+  width: 300px; /* 큰 로고 크기 */
+  height: auto;
+}
+
+.logo.small img {
+  width: 50px; /* 작은 로고 크기 */
+  height: auto;
+}

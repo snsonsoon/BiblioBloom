@@ -1,0 +1,22 @@
+:root {
+    --point-color: #0D3745;
+    --bg-color: #F3F2ED;
+    --box-color: #C6C6C6;
+    --font-family: 'Inter', sans-serif;
+  }
+  
+  body {
+    margin: 0;
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: #000;
+  }
+  
+  button {
+    font-family: var(--font-family);
+  }
+  
+  input {
+    font-family: var(--font-family);
+  }
+  
