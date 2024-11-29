@@ -313,8 +313,7 @@ body {
   .reviews-table td {
     background-color: white;
     color: #333;
-  }  
-
+  } 
 
 /* 서평 상세 페이지 */
 .review-page {
@@ -354,7 +353,8 @@ body {
     font-size: 1rem;
     color: #333;
   }
-  
+
+
   .review-details {
     text-align: left;
     width: 100%;
@@ -523,18 +523,27 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    align-items: center; /* 블럭을 중앙 정렬 */
+    align-items: stretch; /* 블럭을 중앙 정렬 */
   }
   
   .book-row {
     background-color: white;
-    width: 80%; /* 페이지 너비의 80%로 설정 */
+    align-items: center;
+    width: 100%;
     max-width: 1200px; /* 최대 너비 제한 */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   }
   
+  .book-row img {
+    width: 120px;
+    height: auto; /* 이미지 비율을 고정 */
+    margin-right: 20px;
+    border-radius: 8px;
+    object-fit: cover; /* 이미지 잘림 방지 */
+  }
+
   .book-row p {
     margin: 5px 0;
     font-size: 1rem;
@@ -604,58 +613,76 @@ body {
 
 /* 소장 도서관 섹션 스타일 */
 .libraries-container {
-    margin-top: 20px;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
-  }
-  
-  .libraries-container h2 {
-    font-size: 1.5rem;
-    color: #0D3745;
-    margin-bottom: 15px;
-  }
-  
-  .libraries-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .library-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid #E0E0E0;
-  }
-  
-  .library-item:last-child {
-    border-bottom: none;
-  }
-  
-  .library-name {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .library-link {
-    text-decoration: none;
-    color: #08333f;
-    font-size: 0.9rem;
-  }
-  
-  .library-link:hover {
-    text-decoration: underline;
-  }
+  margin-top: 20px;
+  padding: 20px;
+  width: 100%;
+  max-width: 900px; /* 테이블이 더 넓어지도록 조정 */
+}
+
+.libraries-container h2 {
+  font-size: 1.5rem;
+  color: #0D3745;
+  margin-bottom: 15px;
+}
+
+.libraries-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.libraries-table th,
+.libraries-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 10px;
+}
+
+.libraries-table th {
+  background-color: #0D3745;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.libraries-table td {
+  background-color: white;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.library-link {
+  text-decoration: none;
+  color: #08333f;
+}
+
+.library-link:hover {
+  text-decoration: underline;
+}
+
+/* 서평 테이블 */
+.reviews-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.reviews-table th,
+.reviews-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.reviews-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
   
 /* 서평 섹션 스타일 */
 .reviews-container {
-    margin-top: 20px;
+    margin-top: 5px;
     padding: 20px;
     border-radius: 8px;
     width: 100%;
@@ -735,13 +762,37 @@ body {
 }
 
 .library-item {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 90%; /* 부모 컨테이너 너비의 90% */
-    max-width: 900px; /* 최대 너비 */
-    text-align: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 90%; /* 부모 컨테이너 너비의 90% */
+  max-width: 900px; /* 최대 너비 */
+  text-align: center;
+  display: flex; /* flexbox 활성화 */
+  align-items: center; /* 항목들을 세로로 중앙 정렬 */
+  justify-content: space-between; /* 항목들 간의 수평 간격을 일정하게 설정 */
+}
+
+.library-item:last-child {
+  border-bottom: none;
+}
+
+.library-item h3 {
+  margin-right: 20px; /* 도서관 이름과 나머지 항목 간의 간격을 추가 */
+}
+
+.library-item p {
+  margin-right: 20px; /* 도서관 주소와 홈페이지 간의 간격을 추가 */
+}
+
+.library-item a {
+  text-decoration: none;
+  color: #08333f;
+}
+
+.library-item a:hover {
+  text-decoration: underline;
 }
   
 .sort-section {
@@ -819,4 +870,3 @@ justify-content: flex-end; /* 정렬 버튼이 왼쪽 정렬되도록 설정 */
     background-color: white;
     color: #333;
   }
-  

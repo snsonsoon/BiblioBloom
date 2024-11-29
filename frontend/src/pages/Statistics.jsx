@@ -49,7 +49,7 @@ const Statistics = () => {
         </ResponsiveContainer>
         <p>
           그래프 위에 마우스를 올려 <br></br>
-          어떤 분야의 책을 많이 읽었는지 확인해보세요.
+          어떤 분야의 책을 많이 읽었는지<br></br>확인해보세요.
         </p>
       </div>
     </div>

@@ -61,7 +61,7 @@ const LibraryPage = () => {
 
         {/* 소장 도서 목록 섹션 */}
         <div className="library-books">
-          <h2>소장 도서 목록</h2>
+          <h2>소장 도서 Top 10</h2>
           <table className="books-table">
             <thead>
               <tr>

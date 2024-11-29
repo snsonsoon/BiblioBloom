@@ -44,7 +44,7 @@ const TopReaders = () => {
         </BarChart>
       </ResponsiveContainer>
       <p className="top-reader-highlight">
-        {TopBookCounts}권을 읽은 <strong>{TopReader}</strong>님, 축하드립니다!
+        {TopBookCounts}권을 읽은 <strong>{TopReader}</strong> 님,<br></br>축하드립니다!
       </p>
     </div>
     </div>
