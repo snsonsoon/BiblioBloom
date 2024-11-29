@@ -12,4 +12,3 @@ class Books(SQLModel, table=True):
     # Relationships
     reviews: list["Reviews"] = Relationship(back_populates="books")
     booklibraries: list["BookLibraries"] = Relationship(back_populates="books")
-    statistics: list["BookStatistics"] = Relationship(back_populates="books")

@@ -6,7 +6,7 @@ from app.routes.statistics import statistics_router
 from app.routes.books import book_router
 from app.routes.reviews import review_router
 from app.routes.libraries import library_router
-from app.database.connection import conn
+from app.database.connection import conn, create_views
 import uvicorn
 import os
 from dotenv import load_dotenv
@@ -20,6 +20,7 @@ ALGORITHM = os.environ.get("ALGORITHM")
 async def lifespan(app: FastAPI):
     # on start up
     conn()
+    create_views()
     yield
     # on exit
 
