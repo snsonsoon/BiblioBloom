@@ -21,7 +21,7 @@ function App() {
         {/* 메인 페이지 */}
         <Route path="/main" element={<MainPage />} />
         <Route path="/reviews" element={<Reviews />} />
-        <Route path="/reviews/:id" element={<ReviewPage />} />
+        <Route path="/reviews/:isbn/:user_id" element={<ReviewPage />} />
         <Route path="/search-book" element={<SearchBook />} />
         <Route path="/books/:id" element={<BookPage />} />
         <Route path="/search-lib" element={<SearchLib />} />

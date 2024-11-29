@@ -1,365 +1,165 @@
-// import React, { useState } from "react";
-// import { useParams, Link } from "react-router-dom";
-// import Navbar from "../components/Layout/Navbar";
-// import BookInfo from "../components/Cards/BookInfo";
-// import "./Page.css";
-
-// const mockBooks = [
-//   {
-//     id: 1,
-//     title: "책 제목1",
-//     author: "작가1",
-//     publisher: "출판사1",
-//     year: 2022,
-//     genre: "문학",
-//     averageRating: 4.5,
-//     reviewsCount: 12,
-//   },
-//   {
-//     id: 2,
-//     title: "책 제목2",
-//     author: "작가2",
-//     publisher: "출판사2",
-//     year: 2021,
-//     genre: "경제",
-//     averageRating: 4.0,
-//     reviewsCount: 8,
-//   },
-// ];
-
-// const mockLibraries = [
-//     { id: 1, name: "도서관1", location: "서울", website: "https://library1.example.com" },
-//     { id: 2, name: "도서관2", location: "부산", website: "https://library2.example.com" },
-//   ];  
-
-// const mockReviews = [
-//   { id: 1, title: "감동적인 이야기", author: "작성자1", rating: 4 },
-//   { id: 2, title: "유익한 내용", author: "작성자2", rating: 5 },
-// ];
-
-// const BookPage = () => {
-//   const { id } = useParams();
-//   const book = mockBooks.find((book) => book.id === parseInt(id, 10));
-
-//   const [showReviewForm, setShowReviewForm] = useState(false);
-//   const [newReview, setNewReview] = useState({
-//     title: "",
-//     content: "",
-//     rating: 0,
-//   });
-//   const [error, setError] = useState("");
-
-//   const handleReviewSubmit = (e) => {
-//     e.preventDefault();
-//     const { title, content, rating } = newReview;
-
-//     // 검증: 누락된 입력 필드가 있는 경우
-//     if (!title || !content || rating <= 0) {
-//       setError("모든 필드를 올바르게 입력해주세요.");
-//       return;
-//     }
-
-//     setError(""); // 에러 메시지 초기화
-//     console.log("New Review Submitted:", newReview);
-//     setShowReviewForm(false); // 폼 닫기
-//     setNewReview({ title: "", content: "", rating: 0 }); // 폼 초기화
-//   };
-
-//   if (!book) {
-//     return (
-//       <div className="main-page-container">
-//         <Navbar />
-//         <p><br></br><br></br></p>
-//         <p>해당 책을 찾을 수 없습니다.</p>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="main-page-container">
-//       <Navbar />
-//       <div className="book-page">
-//         {/* 책 정보 섹션 */}
-//         <BookInfo book={book} />
-
-//         {/* 소장 도서관 섹션 */}
-//         <div className="libraries-container">
-//           <h2>소장 도서관</h2>
-//           <ul className="libraries-list">
-//             {mockLibraries.map((library) => (
-//               <li key={library.id} className="library-item">
-//                 <p className="library-name">{library.name}</p>
-//                 <a
-//                   href={library.website}
-//                   target="_blank"
-//                   rel="noopener noreferrer"
-//                   className="library-link"
-//                 >
-//                   홈페이지
-//                 </a>
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-
-//         {/* 서평 테이블 */}
-//         <div className="reviews-container">
-//           <h2>서평</h2>
-//           <table className="reviews-table">
-//             <thead>
-//               <tr>
-//                 <th>서평 제목</th>
-//                 <th>작성자</th>
-//                 <th>평점</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {mockReviews.map((review) => (
-//                 <tr key={review.id}>
-//                   <td>
-//                     <Link to={`/reviews/${review.id}`}>{review.title}</Link>
-//                   </td>
-//                   <td>{review.author}</td>
-//                   <td>{review.rating} / 5</td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-
-//         {/* 서평 추가 버튼 및 폼 */}
-//         <div className="add-review-container">
-//           <button onClick={() => setShowReviewForm(!showReviewForm)}>
-//             서평 추가
-//           </button>
-//           {showReviewForm && (
-//             <form onSubmit={handleReviewSubmit} className="review-form">
-//               <label>
-//                 별점:
-//                 <input
-//                   type="number"
-//                   min="1"
-//                   max="5"
-//                   value={newReview.rating}
-//                   onChange={(e) =>
-//                     setNewReview({ ...newReview, rating: e.target.value })
-//                   }
-//                 />
-//               </label>
-//               <label>
-//                 제목:
-//                 <input
-//                   type="text"
-//                   value={newReview.title}
-//                   onChange={(e) =>
-//                     setNewReview({ ...newReview, title: e.target.value })
-//                   }
-//                 />
-//               </label>
-//               <label>
-//                 내용:
-//                 <textarea
-//                   value={newReview.content}
-//                   onChange={(e) =>
-//                     setNewReview({ ...newReview, content: e.target.value })
-//                   }
-//                 />
-//               </label>
-//               {error && <p className="error-message">{error}</p>}
-//               <button type="submit">저장</button>
-//               <button type="button" onClick={() => setShowReviewForm(false)}>
-//                 닫기
-//               </button>
-//             </form>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default BookPage;
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Layout/Navbar";
 import BookInfo from "../components/Cards/BookInfo";
+import { getBookDetails, getLibrariesByBook, getReviewsByBook, addReview } from "../services/api";
 import "./Page.css";
-
-const mockBooks = [
-  {
-    id: 1,
-    title: "책 제목1",
-    author: "작가1",
-    publisher: "출판사1",
-    year: 2022,
-    genre: "문학",
-    averageRating: 4.5,
-    reviewsCount: 12,
-  },
-  {
-    id: 2,
-    title: "책 제목2",
-    author: "작가2",
-    publisher: "출판사2",
-    year: 2021,
-    genre: "경제",
-    averageRating: 4.0,
-    reviewsCount: 8,
-  },
-];
-
-const mockLibraries = [
-  { id: 1, name: "도서관1", location: "서울", website: "https://library1.example.com" },
-  { id: 2, name: "도서관2", location: "부산", website: "https://library2.example.com" },
-];
-
-const mockReviews = [
-  { id: 1, title: "감동적인 이야기", author: "작성자1", rating: 4 },
-  { id: 2, title: "유익한 내용", author: "작성자2", rating: 5 },
-];
-
 const BookPage = () => {
-  const { id } = useParams();
-  const book = mockBooks.find((book) => book.id === parseInt(id, 10));
-
-  const [showReviewForm, setShowReviewForm] = useState(false);
+  const { id: bookId } = useParams(); // URL에서 bookId 가져오기
+  const [book, setBook] = useState(null); // 책 정보
+  const [libraries, setLibraries] = useState([]); // 도서관 정보
+  const [reviews, setReviews] = useState([]); // 서평 정보
+  const [error, setError] = useState(""); // 에러 상태
+  // 서평 작성 상태
   const [newReview, setNewReview] = useState({
-    title: "",
-    content: "",
+    review_title: "",
+    body: "",
     rating: 0,
   });
-  const [error, setError] = useState("");
-
-  const handleReviewSubmit = (e) => {
+  const [formError, setFormError] = useState(""); // 폼 에러 상태
+  const [showReviewForm, setShowReviewForm] = useState(false); // 폼 보이기 상태
+  // 데이터 가져오기
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const bookDetails = await getBookDetails(bookId);
+        setBook(bookDetails);
+        const libraryData = await getLibrariesByBook(bookId);
+        setLibraries(libraryData);
+        const reviewData = await getReviewsByBook(bookId);
+        setReviews(reviewData);
+      } catch (err) {
+        setError("데이터를 가져오는 중 문제가 발생했습니다.");
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, [bookId]);
+  // 서평 제출 핸들러
+  const handleReviewSubmit = async (e) => {
     e.preventDefault();
-    const { title, content, rating } = newReview;
-
-    // 검증: 누락된 입력 필드가 있는 경우
-    if (!title || !content || rating <= 0) {
-      setError("모든 필드를 올바르게 입력해주세요.");
+    const { review_title, body, rating } = newReview;
+    // 검증
+    if (!review_title || !body || rating <= 0) {
+      setFormError("모든 필드를 올바르게 입력해주세요.");
       return;
     }
-
-    setError(""); // 에러 메시지 초기화
-    console.log("New Review Submitted:", newReview);
-    setShowReviewForm(false); // 폼 닫기
-    setNewReview({ title: "", content: "", rating: 0 }); // 폼 초기화
+    try {
+      const userId = localStorage.getItem("user_id");
+      const addedReview = await addReview({
+        isbn: bookId,
+        user_id: userId,
+        review_title,
+        body,
+        rating: parseInt(rating, 5),
+      });
+      // 성공적으로 추가된 경우
+      setReviews((prev) => [...prev, { ...addedReview, id: `${addedReview.isbn}-${addedReview.user_id}` }]);
+      setShowReviewForm(false); // 폼 닫기
+      setNewReview({ isbn: "", user_id: "", review_title: "", body: "", rating: 1 }); // 폼 초기화
+      setFormError(""); // 에러 초기화
+    } catch (err) {
+      setFormError("서평 추가 중 문제가 발생했습니다.");
+      console.error(err);
+    }
   };
-
-  if (!book) {
-    return (
-      <div className="main-page-container">
-        <Navbar />
-        <p><br></br><br></br></p>
-        <p>해당 책을 찾을 수 없습니다.</p>
-      </div>
-    );
-  }
-
+  if (error) return <p>{error}</p>;
+  if (!book) return <p>로딩 중...</p>;
   return (
     <div className="main-page-container">
       <Navbar />
       <div className="book-page">
-        {/* 책 정보 섹션 */}
+        {/* 책 정보 */}
         <BookInfo book={book} />
-
-        {/* 소장 도서관 섹션 (테이블 형식으로 변경) */}
+        {/* 소장 도서관 정보 */}
         <div className="libraries-container">
           <h2>소장 도서관</h2>
-          <table className="libraries-table">
-            <thead>
-              <tr>
-                <th>도서관 이름</th>
-                <th>위치</th>
-                <th>홈페이지</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mockLibraries.map((library) => (
-                <tr key={library.id}>
-                  <td>{library.name}</td>
-                  <td>{library.location}</td>
-                  <td>
-                    <a
-                      href={library.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="library-link"
-                    >
-                      홈페이지
-                    </a>
-                  </td>
+          {libraries.length === 0 ? (
+            <p>소장 도서관 정보가 없습니다.</p>
+          ) : (
+            <table className="libraries-table">
+              <thead>
+                <tr>
+                  <th>도서관 이름</th>
+                  <th>위치</th>
+                  <th>홈페이지</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {libraries.map((library) => (
+                  <tr key={library.library_id}>
+                    <td>{library.library_name}</td>
+                    <td>{library.address}</td>
+                    <td>
+                      <a href={library.homepage} target="_blank" rel="noopener noreferrer">
+                        홈페이지
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
-
-        {/* 서평 테이블 */}
+        {/* 서평 정보 */}
         <div className="reviews-container">
           <h2>서평</h2>
-          <table className="reviews-table">
-            <thead>
-              <tr>
-                <th>서평 제목</th>
-                <th>작성자</th>
-                <th>평점</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mockReviews.map((review) => (
-                <tr key={review.id}>
-                  <td>
-                    <Link to={`/reviews/${review.id}`}>{review.title}</Link>
-                  </td>
-                  <td>{review.author}</td>
-                  <td>{review.rating} / 5</td>
+          {reviews.length === 0 ? (
+            <p>서평이 없습니다. 첫 서평을 작성해보세요!</p>
+          ) : (
+            <table className="reviews-table">
+              <thead>
+                <tr>
+                  <th>서평 제목</th>
+                  <th>작성자</th>
+                  <th>평점</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {reviews.map((review) => (
+                  <tr key={review.id}>
+                    <td>
+                      <Link to={`/reviews/${review.id}`}>{review.review_title}</Link>
+                    </td>
+                    <td>{review.nickname}</td>
+                    <td>{review.rating} / 5</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
-
         {/* 서평 추가 버튼 및 폼 */}
         <div className="add-review-container">
-          <button onClick={() => setShowReviewForm(!showReviewForm)}>
-            서평 추가
-          </button>
+          <button onClick={() => setShowReviewForm(!showReviewForm)}>서평 추가</button>
           {showReviewForm && (
             <form onSubmit={handleReviewSubmit} className="review-form">
-              <label>
-                별점:
-                <input
-                  type="number"
-                  min="1"
-                  max="5"
-                  value={newReview.rating}
-                  onChange={(e) =>
-                    setNewReview({ ...newReview, rating: e.target.value })
-                  }
-                />
-              </label>
               <label>
                 제목:
                 <input
                   type="text"
-                  value={newReview.title}
-                  onChange={(e) =>
-                    setNewReview({ ...newReview, title: e.target.value })
-                  }
+                  value={newReview.review_title}
+                  onChange={(e) => setNewReview({ ...newReview, review_title: e.target.value })}
                 />
               </label>
               <label>
                 내용:
                 <textarea
-                  value={newReview.content}
-                  onChange={(e) =>
-                    setNewReview({ ...newReview, content: e.target.value })
-                  }
+                  value={newReview.body}
+                  onChange={(e) => setNewReview({ ...newReview, body: e.target.value })}
                 />
               </label>
-              {error && <p className="error-message">{error}</p>}
+              <label>
+                별점:
+                <input
+                  type="number"
+                  min="0"
+                  max="5"
+                  value={newReview.rating}
+                  onChange={(e) => setNewReview({ ...newReview, rating: e.target.value })}
+                />
+              </label>
+              {formError && <p className="error-message">{formError}</p>}
               <button type="submit">저장</button>
               <button type="button" onClick={() => setShowReviewForm(false)}>
                 닫기
@@ -371,5 +171,111 @@ const BookPage = () => {
     </div>
   );
 };
-
 export default BookPage;
+
+// import React, { useEffect, useState } from "react";
+// import { useParams, Link } from "react-router-dom";
+// import Navbar from "../components/Layout/Navbar";
+// import BookInfo from "../components/Cards/BookInfo";
+// import { getBookDetails, getLibrariesByBook, getReviewsByBook, addReview } from "../services/api";
+// import "./Page.css";
+// const BookPage = () => {
+//   const { id: bookId } = useParams(); // URL에서 bookId 가져오기
+//   const [book, setBook] = useState(null); // 책 정보
+//   const [libraries, setLibraries] = useState([]); // 도서관 정보
+//   const [reviews, setReviews] = useState([]); // 서평 정보
+//   const [error, setError] = useState(""); // 에러 상태
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         // 책 상세 정보 가져오기
+//         const bookDetails = await getBookDetails(bookId);
+//         setBook(bookDetails);
+//         // 도서관 정보 가져오기
+//         const libraryData = await getLibrariesByBook(bookId);
+//         setLibraries(libraryData);
+//         // 서평 정보 가져오기
+//         const reviewData = await getReviewsByBook(bookId);
+//         setReviews(reviewData);
+//       } catch (err) {
+//         setError("데이터를 가져오는 중 문제가 발생했습니다.");
+//         console.error(err);
+//       }
+//     };
+//     fetchData();
+//   }, [bookId]);
+//   if (error) return <p>{error}</p>;
+//   if (!book) return <p>로딩 중...</p>;
+//   return (
+//     <div className="main-page-container">
+//       <Navbar />
+//       <div className="book-page">
+//         {/* 책 정보 */}
+//         <BookInfo book={book} />
+//         {/* 소장 도서관 정보 */}
+//         <div className="libraries-container">
+//           <h2>소장 도서관</h2>
+//           {libraries.length === 0 ? (
+//             <p>소장 도서관 정보가 없습니다.</p>
+//           ) : (
+//             <table className="libraries-table">
+//               <thead>
+//                 <tr>
+//                   <th>도서관 이름</th>
+//                   <th>위치</th>
+//                   <th>홈페이지</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {libraries.map((library) => (
+//                   <tr key={library.library_id}>
+//                     <td>{library.library_name}</td>
+//                     <td>{library.address}</td>
+//                     <td>
+//                       <a
+//                         href={library.homepage}
+//                         target="_blank"
+//                         rel="noopener noreferrer"
+//                       >
+//                         홈페이지
+//                       </a>
+//                     </td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </table>
+//           )}
+//         </div>
+//         {/* 서평 정보 */}
+//         <div className="reviews-container">
+//           <h2>서평</h2>
+//           {reviews.length === 0 ? (
+//             <p>서평이 없습니다. 첫 서평을 작성해보세요!</p>
+//           ) : (
+//             <table className="reviews-table">
+//               <thead>
+//                 <tr>
+//                   <th>서평 제목</th>
+//                   <th>작성자</th>
+//                   <th>평점</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {reviews.map((review) => (
+//                   <tr key={review.id}>
+//                     <td>
+//                       <Link to={`/reviews/${review.id}`}>{review.review_title}</Link>
+//                     </td>
+//                     <td>{review.nickname}</td>
+//                     <td>{review.rating} / 5</td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </table>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+// export default BookPage;
