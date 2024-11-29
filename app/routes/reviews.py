@@ -190,3 +190,4 @@ async def add_review(review_data: AddReviewRequest, db: Session = Depends(get_db
         cover_image=new_review.books.cover_image,
         nickname=new_review.users.nickname  # Assuming relationships are set
     )
+

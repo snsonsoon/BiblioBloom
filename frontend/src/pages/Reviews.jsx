@@ -75,9 +75,9 @@ const Reviews = () => {
           </thead>
           <tbody>
             {allReviews.map((review) => (
-              <tr key={`${review.isbn}-${review.user_id}`}>
+              <tr key={`${review.isbn}/${review.user_id}`}>
                 <td>
-                  <Link to={`/reviews/${review.isbn}-${review.user_id}`}>
+                  <Link to={`/reviews/${review.isbn}/${review.user_id}`}>
                     {review.review_title}
                   </Link>
                 </td>

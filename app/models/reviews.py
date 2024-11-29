@@ -1,9 +1,9 @@
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import datetime
 from typing import Optional
-from sqlalchemy import Column, ForeignKey, String
+from sqlalchemy import ForeignKeyConstraint
 
-class Review(SQLModel, table=True):
+class Reviews(SQLModel, table=True):
     isbn: str = Field(primary_key=True, max_length=13, foreign_key="books.isbn")
     user_id: str = Field(primary_key=True, max_length=50, foreign_key="users.user_id")
     review_title: str = Field(nullable=False, max_length=255)
@@ -13,8 +13,8 @@ class Review(SQLModel, table=True):
     created_at: datetime = Field(default=datetime.utcnow)
 
     # Relationships
-    books: "Book" = Relationship(back_populates="reviews")
-    users: "User" = Relationship(back_populates="reviews")
+    books: "Books" = Relationship(back_populates="reviews")
+    users: "Users" = Relationship(back_populates="reviews")
 
     # Foreign Key constraints with ON DELETE CASCADE
     __table_args__ = (
