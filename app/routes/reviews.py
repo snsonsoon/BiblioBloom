@@ -4,14 +4,14 @@ from ..database.connection import get_db
 from ..models.reviews import Reviews 
 from ..models.books import Books
 from ..models.users import Users 
-from ..schemas.reviews import ReviewShorts, ReviewDetails
+from ..schemas.reviews import ReviewShorts, ReviewDetails, AddReviewRequest, ReviewKey
 from typing import List
 from datetime import datetime
 
 review_router = APIRouter(prefix='/reviews', tags=["Review"])
 
 @review_router.get('/sorted', response_model=List[ReviewShorts])
-async def get_sorted_reviews(sort_by: str = Query("newest", enum=["newest", "likes"]), db: Session = Depends(get_db)):
+async def get_sorted_reviews(sort_by: str = Query("newest", enum=["newest", "likes"]), limit: int = Query(None, ge=1, description="Number of results to return (1-100)"), db: Session = Depends(get_db)):
     # Determine sorting order based on query parameter
     if sort_by == "newest":
         order_by = Reviews.created_at.desc()  # Newest first
@@ -20,13 +20,22 @@ async def get_sorted_reviews(sort_by: str = Query("newest", enum=["newest", "lik
     else:
         raise HTTPException(status_code=400, detail="Invalid sort option")
 
-    # Query to fetch reviews sorted by the selected option
-    sorted_reviews = db.exec(
-        select(Reviews, Books.book_title, Users.nickname)
-        .join(Books, Reviews.isbn == Books.isbn)
-        .join(Users, Reviews.user_id == Users.user_id)
-        .order_by(order_by)
-    ).all()
+    if limit is not None:
+        # Query to fetch reviews sorted by the selected option
+        sorted_reviews = db.exec(
+            select(Reviews, Books.book_title, Users.nickname)
+            .join(Books, Reviews.isbn == Books.isbn)
+            .join(Users, Reviews.user_id == Users.user_id)
+            .order_by(order_by).limit(limit)
+        ).all()
+    else:
+        # Query to fetch reviews sorted by the selected option
+        sorted_reviews = db.exec(
+            select(Reviews, Books.book_title, Users.nickname)
+            .join(Books, Reviews.isbn == Books.isbn)
+            .join(Users, Reviews.user_id == Users.user_id)
+            .order_by(order_by)
+        ).all()
 
     if not sorted_reviews:
         raise HTTPException(status_code=404, detail="No reviews found")
@@ -48,9 +57,13 @@ async def get_sorted_reviews(sort_by: str = Query("newest", enum=["newest", "lik
         for review in sorted_reviews
     ]
 
-@review_router.get('/details', response_model=ReviewDetails)
+@review_router.get('/details/{isbn}/{user_id}', response_model=ReviewDetails)
 async def get_review_details(isbn: str, user_id: str, db: Session = Depends(get_db)):
     # Query to get the book and review based on ISBN and user_id
+    print("-----------------------------------")
+    print(isbn, user_id)
+    print("-----------------------------------")
+
     result = db.execute(
         select(Books, Reviews, Users.nickname)
         .join(Reviews, Reviews.isbn == Books.isbn)
@@ -82,9 +95,10 @@ async def get_review_details(isbn: str, user_id: str, db: Session = Depends(get_
         nickname=nickname
     )
 
-@review_router.post('/like', response_model=ReviewDetails)
+@review_router.post('/like/{isbn}/{user_id}', response_model=ReviewDetails)
 async def increment_likes(isbn: str, user_id: str, db: Session = Depends(get_db)):
     # Query to get the review based on ISBN and user_id
+
     review = db.execute(
         select(Reviews).filter(Reviews.isbn == isbn, Reviews.user_id == user_id)
     ).scalar_one_or_none()
@@ -122,11 +136,21 @@ async def increment_likes(isbn: str, user_id: str, db: Session = Depends(get_db)
     )
 
 @review_router.post('/add', response_model=ReviewDetails)
-def add_review(isbn: str, user_id: str, review_title: str, body: str, rating: int, db: Session = Depends(get_db)):
+async def add_review(review_data: AddReviewRequest, db: Session = Depends(get_db)):
+    """
+    Add a new review for a book. Ensures that a review for the same book by the same user does not already exist.
+    """
+    # Unpack the request data
+    isbn = review_data.isbn
+    user_id = review_data.user_id
+    review_title = review_data.review_title
+    body = review_data.body
+    rating = review_data.rating
+
     # Check if a review already exists for the given ISBN and user_id
-    existing_review = db.execute(
-        select(Reviews).filter(Reviews.isbn == isbn, Reviews.user_id == user_id)
-    ).scalar_one_or_none()
+    existing_review = db.exec(
+        select(Reviews).where(Reviews.isbn == isbn, Reviews.user_id == user_id)
+    ).first()
 
     if existing_review:
         raise HTTPException(status_code=400, detail="Review already exists for this user and book")
@@ -146,7 +170,7 @@ def add_review(isbn: str, user_id: str, review_title: str, body: str, rating: in
     db.add(new_review)
     db.commit()
 
-    # Refresh the new review to get the updated data (including the generated created_at timestamp)
+    # Refresh the new review to get the updated data (including relationships)
     db.refresh(new_review)
 
     # Return the newly created review details

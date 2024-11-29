@@ -15,6 +15,8 @@ class BookResponse(BaseModel):
 class LibraryOwnerResponse(BaseModel):
     library_id: int
     library_name: str
+    address: str
+    homepage: str
 
     class Config:
         orm_mode = True

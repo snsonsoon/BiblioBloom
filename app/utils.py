@@ -31,6 +31,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 
 def create_access_token_cookie(response: Response, data: dict, expires_delta: timedelta = None):
     token = create_access_token(data, expires_delta)
+    user_id = data.get("user_id")
     response.set_cookie(
         key="access_token",
         value=token,
@@ -41,6 +42,19 @@ def create_access_token_cookie(response: Response, data: dict, expires_delta: ti
         secure=True,  # Use with HTTPS
         samesite="Lax"  # Helps mitigate CSRF attacks
     )
+
+    if user_id:
+        response.set_cookie(
+            key="user_id",
+            value=str(user_id),  # user_id는 문자열로 저장
+            httponly=True,  # HTTP-only로 설정하여 JS에서 접근 불가
+            max_age=expires_delta.total_seconds() if expires_delta else 15 * 60,  # seconds
+            expires=expires_delta.total_seconds() if expires_delta else 15 * 60,
+            path="/",
+            secure=True,  # Use with HTTPS
+            samesite="Lax"  # Helps mitigate CSRF attacks
+        )
+
     return token
 
 def remove_access_token_cookie(response: Response):

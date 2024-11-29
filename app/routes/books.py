@@ -21,23 +21,24 @@ books_table = Table('books', metadata, autoload_with=engine_url)  # Ensure you l
 book_router = APIRouter(prefix='/books', tags=["Books"])
 
 @book_router.get('/top', response_model=List[BookResponse])
-async def get_top_books(criteria: str, db: Session = Depends(get_db)):
+async def get_top_books(criteria: str = Query("highest_rating", description="Sorting criteria: 'highest_rating', 'title', 'number_of_reviews', 'publication_year'"),
+    limit: int = Query(10, ge=1, le=100, description="Number of results to return (1-100)"), db: Session = Depends(get_db)):
     # Handle sorting based on the criteria argument
     if criteria == 'highest_rating':
         books_query = db.execute(
-            select(bookstatistics, books_table).join(books_table, books_table.c.isbn == bookstatistics.c.isbn).order_by(desc(bookstatistics.c.average_rating))
+            select(bookstatistics, books_table).join(books_table, books_table.c.isbn == bookstatistics.c.isbn).order_by(desc(bookstatistics.c.average_rating)).limit(limit)
         ).fetchall()
     elif criteria == 'title':
         books_query = db.execute(
-            select(bookstatistics, books_table).join(books_table, books_table.c.isbn == bookstatistics.c.isbn).order_by(books_table.c.book_title)
+            select(bookstatistics, books_table).join(books_table, books_table.c.isbn == bookstatistics.c.isbn).order_by(books_table.c.book_title).limit(limit)
         ).fetchall()
     elif criteria == 'number_of_reviews':
         books_query = db.execute(
-            select(bookstatistics, books_table).join(books_table, books_table.c.isbn == bookstatistics.c.isbn).order_by(desc(bookstatistics.c.total_reviews))
+            select(bookstatistics, books_table).join(books_table, books_table.c.isbn == bookstatistics.c.isbn).order_by(desc(bookstatistics.c.total_reviews)).limit(limit)
         ).fetchall()
     elif criteria == 'publication_year':
         books_query = db.execute(
-            select(bookstatistics, books_table).join(books_table, books_table.c.isbn == bookstatistics.c.isbn).order_by(desc(books_table.c.publication_year))
+            select(bookstatistics, books_table).join(books_table, books_table.c.isbn == bookstatistics.c.isbn).order_by(desc(books_table.c.publication_year)).limit(limit)
         ).fetchall()
     else:
         raise HTTPException(status_code=400, detail="Invalid criteria. Use one of: 'highest_rating', 'title', 'number_of_reviews', 'publication_year'.")
@@ -134,17 +135,35 @@ async def get_book_by_isbn(isbn: str, db: Session = Depends(get_db)):
 async def own_libraries(isbn: str, db: Session = Depends(get_db)):
     # Query to get all the libraries that own the book with the provided ISBN
     own_libraries = db.execute(
-        select(Libraries.library_id, Libraries.library_name)
+        select(Libraries.library_id, Libraries.library_name, Libraries.address, Libraries.homepage)
         .join(BookLibraries, BookLibraries.library_id == Libraries.library_id)
         .filter(BookLibraries.isbn == isbn)
     ).all()
-
-    # If no libraries are found, raise a 404 error
+    # If no libraries are found, return an empty list
     if not own_libraries:
-        raise HTTPException(status_code=404, detail="No libraries found that own the book")
-
+        return []  # Return an empty list instead of raising a 404 error
     # Return a list of libraries with their ID and name
-    return [LibraryOwnerResponse(library_id=library_id, library_name=library_name) for library_id, library_name in own_libraries]
+    return [LibraryOwnerResponse(library_id=library_id, library_name=library_name, address=address, homepage=homepage) for library_id, library_name, address, homepage in own_libraries]
+
+# @book_router.get('/{isbn}/own_libraries', response_model=List[LibraryOwnerResponse])
+# async def own_libraries(isbn: str, db: Session = Depends(get_db)):
+#     print("-------------------------------------------")
+#     print(isbn)
+#     print("-------------------------------------------")
+
+#     # Query to get all the libraries that own the book with the provided ISBN
+#     own_libraries = db.execute(
+#         select(Libraries.library_id, Libraries.library_name)
+#         .join(BookLibraries, BookLibraries.library_id == Libraries.library_id)
+#         .filter(BookLibraries.isbn == isbn)
+#     ).all()
+
+#     # If no libraries are found, raise a 404 error
+#     if not own_libraries:
+#         raise HTTPException(status_code=404, detail="No libraries found that own the book")
+
+#     # Return a list of libraries with their ID and name
+#     return [LibraryOwnerResponse(library_id=library_id, library_name=library_name) for library_id, library_name in own_libraries]
 
 @book_router.get('/{isbn}/reviews', response_model=List[ReviewShorts])
 async def get_reviews_by_isbn(isbn: str, db: Session = Depends(get_db)):

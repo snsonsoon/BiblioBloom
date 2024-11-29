@@ -1,6 +1,17 @@
 from pydantic import BaseModel
 from datetime import datetime
 
+class ReviewKey(BaseModel):
+    isbn: str 
+    user_id: str 
+
+class AddReviewRequest(BaseModel): 
+    isbn: str 
+    user_id: str 
+    review_title: str 
+    body: str 
+    rating: int
+
 class ReviewShorts(BaseModel):
     isbn: str
     user_id: str

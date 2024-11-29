@@ -36,6 +36,7 @@ statistics_router = APIRouter(prefix='/statistics', tags=["Statistics"])
 @statistics_router.get("/get_user_review_statistics/{user_id}", response_model=UserStatisticsResponse) 
 async def get_user_review_statistics(user_id: str, db: Session = Depends(get_db)):
     # 총 사용자 통계 조회 후 리뷰 수 기준으로 내림차순 정렬
+    print(user_id)
     query = select(UserStatistics).order_by(UserStatistics.c.total_reviews.desc())  # UserStatistics의 컬럼을 명시적으로 선택
     total_reviews = db.execute(query).fetchall()  # 모든 사용자의 통계를 가져옵니다
 
@@ -73,8 +74,11 @@ async def get_user_review_statistics(user_id: str, db: Session = Depends(get_db)
     }
 
 @statistics_router.get('/get_genre_ratio/{user_id}', response_model=GenreRatioResponse)
-def get_genre_ratio(user_id: str, db: Session = Depends(get_db)):
+async def get_genre_ratio(user_id: str, db: Session = Depends(get_db)):
     # userreviewgenres 뷰에서 유저의 장르 및 리뷰 개수 가져오기
+    print("------------------------------------------")
+    print(user_id)
+    print("------------------------------------------")
     stmt = select(UserReviewGenres.c.genre, UserReviewGenres.c.review_count).where(UserReviewGenres.c.user_id == user_id)
     results = db.execute(stmt).fetchall()
 
@@ -91,11 +95,11 @@ def get_genre_ratio(user_id: str, db: Session = Depends(get_db)):
     return {"user_id": user_id, "genre_ratio": genre_ratio}
 
 @statistics_router.get('/top_users_by_books_read', response_model=List[UserBooksRead])
-def get_top_users_by_books_read(db: Session = Depends(get_db)):
+async def get_top_users_by_books_read(db: Session = Depends(get_db)):
     # Query the userstatistics view to get the top 3 users by total_reviews
     result = db.execute(
         UserStatistics.select().order_by(UserStatistics.c.total_reviews.desc())
-    ).fetchall()
+    ).fetchmany(3)
 
     if not result:
         raise HTTPException(status_code=404, detail="No user statistics found")

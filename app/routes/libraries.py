@@ -53,7 +53,7 @@ async def get_library_by_id(library_id: int, db: Session = Depends(get_db)):
     )
 
 @library_router.get('/{library_id}/books', response_model=List[BookResponse])
-def get_books_by_library(library_id: int, db: Session = Depends(get_db)):
+async def get_books_by_library(library_id: int, db: Session = Depends(get_db)):
     # Query to get books in the specified library, ordered by average_rating
     books = db.execute(
         select(Books, BookStatistics.average_rating, BookStatistics.total_reviews)

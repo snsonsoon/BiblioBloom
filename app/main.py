@@ -33,32 +33,32 @@ app.add_middleware(
     allow_headers=["*"],  # 모든 헤더 허용
 )
 
-@app.middleware("http")
-async def auth_middleware(request: Request, call_next):
-    # 로그인과 회원가입 경로를 제외한 나머지 경로에만 인증 처리
-    excluded_paths = ["/users/login", "/user/signup"]  # 로그인과 회원가입 경로
+# @app.middleware("http")
+# async def auth_middleware(request: Request, call_next):
+#     # 로그인과 회원가입 경로를 제외한 나머지 경로에만 인증 처리
+#     excluded_paths = ["/user/login", "/user/signup", "/", "/login","/docs","/api/openapi.json"]  # 로그인과 회원가입 경로
     
-    if request.url.path in excluded_paths:
-        return await call_next(request)  # 제외된 경로는 미들웨어 처리 없이 바로 응답 반환
+#     if request.url.path in excluded_paths:
+#         return await call_next(request)  # 제외된 경로는 미들웨어 처리 없이 바로 응답 반환
 
-    # 여기에 인증 처리 로직 추가
-    token = request.cookies.get("access_token")
-    if not token:
-        return RedirectResponse(url="/login")  # 토큰이 없으면 로그인 페이지로 리다이렉트
+#     # 여기에 인증 처리 로직 추가
+#     token = request.cookies.get("access_token")
+#     if not token:
+#         return RedirectResponse(url="/login")  # 토큰이 없으면 로그인 페이지로 리다이렉트
 
-    # 여기에 토큰 검증 로직 추가 (예시로만)
-    try:
-        # 예시: JWT 토큰 검증
-        import jwt
-        jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-    except jwt.ExpiredSignatureError:
-        return RedirectResponse(url=origins)  # 토큰 만료시 로그인 페이지로 리다이렉트
-    except jwt.InvalidTokenError:
-        return RedirectResponse(url=origins)  # 유효하지 않은 토큰일 경우 로그인 페이지로 리다이렉트
+#     # 여기에 토큰 검증 로직 추가 (예시로만)
+#     try:
+#         # 예시: JWT 토큰 검증
+#         import jwt
+#         jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+#     except jwt.ExpiredSignatureError:
+#         return RedirectResponse(url=origins)  # 토큰 만료시 로그인 페이지로 리다이렉트
+#     except jwt.InvalidTokenError:
+#         return RedirectResponse(url=origins)  # 유효하지 않은 토큰일 경우 로그인 페이지로 리다이렉트
 
-    # 인증이 통과하면 요청 처리
-    response = await call_next(request)
-    return response
+#     # 인증이 통과하면 요청 처리
+#     response = await call_next(request)
+#     return response
 
 @app.get("/")
 def world():
