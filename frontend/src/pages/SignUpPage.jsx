@@ -9,24 +9,25 @@ const SignUpPage = () => {
     nickname: "",
   });
 
-  const [idCheckMessage, setIdCheckMessage] = useState(""); // ID 중복 확인 메시지
+  // const [idCheckMessage, setIdCheckMessage] = useState(""); // ID 중복 확인 메시지
   const [passwordMatchMessage, setPasswordMatchMessage] = useState(""); // 비밀번호 일치 확인 메시지
 
   // Mock 데이터 (기존 회원 리스트)
-  const mockUsers = [
-    { id: "test", password: "password" },
-    { id: "user1", password: "1234" },
-  ];
+  // const mockUsers = [
+  //   { id: "test", password: "password" },
+  //   { id: "user1", password: "1234" },
+  // ];
 
-  // ID 중복 확인
-  const handleIdCheck = () => {
-    const isDuplicate = mockUsers.some((user) => user.id === form.id.trim());
-    if (isDuplicate) {
-      setIdCheckMessage("이미 사용 중인 ID입니다.");
-    } else {
-      setIdCheckMessage("사용 가능한 ID입니다.");
-    }
-  };
+  
+  // // ID 중복 확인
+  // const handleIdCheck = () => {
+  //   const isDuplicate = mockUsers.some((user) => user.id === form.id.trim());
+  //   if (isDuplicate) {
+  //     setIdCheckMessage("이미 사용 중인 ID입니다.");
+  //   } else {
+  //     setIdCheckMessage("사용 가능한 ID입니다.");
+  //   }
+  // };
 
   // 입력 값 변경 핸들러
   const handleChange = (e) => {
@@ -48,7 +49,7 @@ const SignUpPage = () => {
   }, [form.password, form.confirmPassword]); // 비밀번호 상태 변경 시 실행
 
   // 회원가입 처리
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
     // 모든 조건 확인
@@ -57,25 +58,50 @@ const SignUpPage = () => {
       return;
     }
 
-    if (idCheckMessage !== "사용 가능한 ID입니다.") {
-      alert("ID 확인을 완료해주세요.");
-      return;
-    }
+    // if (idCheckMessage !== "사용 가능한 ID입니다.") {
+    //   alert("ID 확인을 완료해주세요.");
+    //   return;
+    // }
 
     if (passwordMatchMessage !== "PW가 일치합니다.") {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
 
-    // 새로운 회원 추가 (Mock 데이터에 추가)
-    mockUsers.push({
-      id: form.id.trim(),
+    // // 새로운 회원 추가 (Mock 데이터에 추가)
+    // mockUsers.push({
+    //   id: form.id.trim(),
+    //   password: form.password,
+    //   nickname: form.nickname,
+    // });
+    const userData = {
+      user_id: form.id.trim(),
       password: form.password,
       nickname: form.nickname,
-    });
+    };
 
-    alert("회원가입이 완료되었습니다!");
-    window.location.href = "/"; // 로그인 페이지로 이동
+    try {
+      const response = await fetch('http://localhost:8000/api/user/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+
+      if (response.ok) {
+        // const data = await response.json();
+        alert("회원가입이 완료되었습니다!");
+        window.location.href = "/"; // Redirect to login page on successful signup
+      } else {
+        throw new Error('Failed to sign up');
+      }
+    } catch (error) {
+      alert(`회원가입 실패: ${error.message}`);
+    }
+
+    // alert("회원가입이 완료되었습니다!");
+    // window.location.href = "/"; // 로그인 페이지로 이동
   };
 
   return (
@@ -93,15 +119,15 @@ const SignUpPage = () => {
               placeholder="ID를 입력하세요"
               value={form.id}
               onChange={handleChange}
-              onBlur={handleIdCheck} // 포커스가 벗어날 때 ID 확인
+              // onBlur={handleIdCheck} // 포커스가 벗어날 때 ID 확인
             />
-            <small
+            {/* <small
               style={{
                 color: idCheckMessage === "사용 가능한 ID입니다." ? "green" : "red",
               }}
             >
               {idCheckMessage}
-            </small>
+            </small> */}
           </div>
 
           {/* 비밀번호 입력 */}
