@@ -165,6 +165,12 @@ INSERT INTO booklibraries (isbn, library_id, availability) VALUES
 
 ## 문제 해결
 + 설치 중 문제가 발생하면 각 패키지의 공식 문서를 참조하세요.
++ `'react-scripts'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는
+배치 파일이 아닙니다.` \n 위와 같은 에러가 나온다면 다음을 실행하세요```bash
+cd frontend
+rm -rf node_modules
+npm install
+```
 + shell을 재시작 해보세요.
 + 백엔드와 프론트엔드의 의존성이 충돌하지 않도록 주의하세요.
 ---
