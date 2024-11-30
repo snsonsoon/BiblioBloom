@@ -191,18 +191,50 @@ async def add_review(review_data: AddReviewRequest, db: Session = Depends(get_db
         nickname=new_review.users.nickname  # Assuming relationships are set
     )
 
-@review_router.put("/{isbn}/{user_id}")
-async def update_review(isbn: str, user_id: str, review: ReviewUpdateRequest, db: Session = Depends(get_db)):
+@review_router.put('/update', response_model=ReviewDetails)
+async def update_review(isbn: str, user_id: str, ReviewData: ReviewUpdateRequest,  db: Session = Depends(get_db)):
+    review_title = ReviewData.review_title
+    body = ReviewData.body
+    rating = ReviewData.rating
+    
+    # Fetch the existing review
+    review = db.execute(
+        select(Reviews).filter(Reviews.isbn == isbn, Reviews.user_id == user_id)
+    ).scalar_one_or_none()
+    if not review:
+        raise HTTPException(status_code=404, detail="Review not found")
+    # Update review fields
+    review.review_title = review_title
+    review.body = body
+    review.rating = rating
+    review.likes = 0
+    # Save changes to the database
+    db.add(review)
+    db.commit()
+    db.refresh(review)
+    # Return updated review details
+    return ReviewDetails(
+        isbn=review.isbn,
+        user_id=review.user_id,
+        review_title=review.review_title,
+        body=review.body,
+        rating=review.rating,
+        likes=review.likes,
+        created_at=review.created_at,
+        book_title=review.books.book_title,
+        author=review.books.author,
+        publisher=review.books.publisher,
+        publication_year=review.books.publication_year,
+        genre=review.books.genre,
+        cover_image=review.books.cover_image,
+        nickname=review.users.nickname
+    )
+
+@review_router.delete("/delete/{isbn}/{user_id}")
+async def delete_review(isbn: str, user_id: str, db: Session = Depends(get_db)):
     db_review = db.query(Reviews).filter(Reviews.isbn == isbn, Reviews.user_id == user_id).first()
     if not db_review:
         raise HTTPException(status_code=404, detail="Review not found")
-    
-    db_review.review_title = review.review_title
-    db_review.body = review.body
-    db_review.rating = review.rating
-    db_review.likes = 0  # Reset likes to 0 on update
-    
+    db.delete(db_review)
     db.commit()
-    db.refresh(db_review)
-    
-    return {"message": "Review updated successfully", "review": db_review}
+    return {"message": f"Review for ISBN {isbn} by user {user_id} successfully deleted"}

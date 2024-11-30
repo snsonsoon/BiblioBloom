@@ -7,7 +7,7 @@ from ..schemas.users import UserSignupRequest, UserLoginRequest
 from ..utils import hash_password, verify_password, create_access_token_cookie, remove_access_token_cookie
 from datetime import datetime, timedelta
 
-user_router = APIRouter(prefix='/user', tags=["User"])
+user_router = APIRouter(prefix='/users', tags=["User"])
 
 @user_router.post("/signup")
 async def signup(user: UserSignupRequest, db: Session = Depends(get_db)):
@@ -50,4 +50,4 @@ async def delete_user(user_id: str, db: Session = Depends(get_db)):
         db.rollback()  # Ensure rollback if anything fails
         raise HTTPException(status_code=500, detail=str(e))
 
-    return {"message": f"User {user_id} and associated reviews automatically deleted by MySQL."}
+    return {"message": f"User {user_id} and associated reviews automatically deleted."}

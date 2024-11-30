@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, conint
 from sqlmodel import Field
 from datetime import datetime
 from typing import Optional
@@ -10,7 +10,7 @@ class ReviewKey(BaseModel):
 class ReviewUpdateRequest(BaseModel):
     review_title: str
     body: str
-    rating: int = Field(default=0, ge=0, le=5)
+    rating: conint(ge=1, le=5)
 
 class AddReviewRequest(BaseModel): 
     isbn: str 
