@@ -10,7 +10,7 @@
 - **MySQL 8.0.37**
 - **npm** 또는 **yarn** (Node.js 설치 시 포함)
 
----
+
 ## 설치
 
 **리포지토리 클론하기**
@@ -54,7 +54,7 @@ npm install
 
 ## 데이터베이스 설정 (MySQL)
 ### 1. 데이터베이스 생성
-MySQL에 접속한 뒤 데이터베이스를 생성합니다.
+**MySQL에 접속한 뒤** 데이터베이스를 생성합니다.
 ```sql
 CREATE DATABASE bibliobloom;
 ```
@@ -74,7 +74,7 @@ MYSQL_DB_NAME = bibliobloom
 ## 실행 방법
 ### 백엔드 실행
 
-1. BiblioBloom 폴더에서 FastAPI 서버를 실행합니다.
+1. **BiblioBloom 폴더에서** FastAPI 서버를 실행합니다.
 ```bash
 uvicorn app.main:app --reload
 ```
@@ -91,6 +91,7 @@ npm start
 
 ## 더미 데이터 삽입
 다음은 기능확인을 위한 더미데이터 삽입 SQL문입니다.
+
 **순서대로 실행하세요**
 ```sql
 INSERT INTO users (user_id, password, nickname) VALUES
