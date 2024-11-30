@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, Response
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 from ..database.connection import get_db
 from ..models import Users as UserModel
@@ -32,3 +33,21 @@ async def login(form_data: UserLoginRequest, db: Session = Depends(get_db), resp
 async def logout(response: Response):
     remove_access_token_cookie(response)
     return {"message": "Logged out successfully"}
+
+@user_router.delete("/delete/{user_id}")
+async def delete_user(user_id: str, db: Session = Depends(get_db)):
+    # First check if the user exists
+    db_user = db.query(UserModel).filter(UserModel.user_id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Use raw SQL to delete the user, let MySQL handle the cascading delete for Reviews
+    try:
+        # Delete the user directly using raw SQL, relying on MySQL's ON DELETE CASCADE
+        db.execute(text("DELETE FROM users WHERE user_id = :user_id"), {"user_id": user_id})
+        db.commit()
+    except Exception as e:
+        db.rollback()  # Ensure rollback if anything fails
+        raise HTTPException(status_code=500, detail=str(e))
+
+    return {"message": f"User {user_id} and associated reviews automatically deleted by MySQL."}

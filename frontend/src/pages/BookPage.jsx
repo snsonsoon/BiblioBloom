@@ -26,8 +26,19 @@ const BookPage = () => {
         setBook(bookDetails);
         const libraryData = await getLibrariesByBook(bookId);
         setLibraries(libraryData);
-        const reviewData = await getReviewsByBook(bookId);
-        setReviews(reviewData);
+        // 서평 데이터 가져오기
+        try {
+          const reviewData = await getReviewsByBook(bookId);
+          setReviews(reviewData);
+        } catch (err) {
+          if (err.response && err.response.status === 404) {
+            // 404 에러 처리: 서평이 없을 때 "리뷰가 없습니다." 메시지 설정
+            setReviews([]);
+          } else {
+            setError("서평 데이터를 가져오는 중 문제가 발생했습니다.");
+            console.error(err);
+          }
+        }
       } catch (err) {
         setError("데이터를 가져오는 중 문제가 발생했습니다.");
         console.error(err);
@@ -117,9 +128,10 @@ const BookPage = () => {
               </thead>
               <tbody>
                 {reviews.map((review) => (
-                  <tr key={review.id}>
+                  <tr key={`${review.isbn}/${review.user_id}`}>
                     <td>
-                      <Link to={`/reviews/${review.id}`}>{review.review_title}</Link>
+                      <Link to={`/reviews/${review.isbn}/${review.user_id}`}>
+                      {review.review_title}</Link>
                     </td>
                     <td>{review.nickname}</td>
                     <td>{review.rating} / 5</td>

@@ -178,7 +178,7 @@ async def get_reviews_by_isbn(isbn: str, db: Session = Depends(get_db)):
     # If no reviews are found for the given ISBN, raise a 404 error
     if not reviews:
         raise HTTPException(status_code=404, detail="No reviews found for the given ISBN")
-
+    print(reviews)
     # Return the list of reviews with the required details using the ReviewShorts schema
     return [
         ReviewShorts(

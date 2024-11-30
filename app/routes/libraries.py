@@ -12,26 +12,28 @@ from typing import List
 library_router = APIRouter(prefix='/libraries', tags=["Libraries"])
 
 @library_router.get('/search', response_model=List[LibraryResponse])
-async def search_libraries(library_name: str, db: Session = Depends(get_db)):
-    # Query to find libraries where the library_name contains the given word (case-insensitive)
-    matched_libraries = db.execute(
-        select(Libraries)
-        .filter(Libraries.library_name.ilike(f"%{library_name}%"))
-    ).scalars().all()
-
-    print(matched_libraries)
-
-    # If no libraries are found, raise a 404 error
+async def search_libraries(library_name: str = "", db: Session = Depends(get_db)):
+    # Query to find libraries
+    if library_name.strip():
+        matched_libraries = db.execute(
+            select(Libraries)
+            .filter(Libraries.library_name.ilike(f"%{library_name}%"))
+        ).scalars().all()
+    else:
+        matched_libraries = db.execute(select(Libraries)).scalars().all()
+    # If no libraries are found, return an empty list
     if not matched_libraries:
-        raise HTTPException(status_code=404, detail="No libraries found with the given name")
-
-    # Return the list of libraries that match the search
-    return [LibraryResponse(
-        library_id=library.library_id,
-        library_name=library.library_name,
-        address=library.address,
-        homepage=library.homepage
-    ) for library in matched_libraries]
+        return []
+    # Return the list of libraries
+    return [
+        LibraryResponse(
+            library_id=library.library_id,
+            library_name=library.library_name,
+            address=library.address,
+            homepage=library.homepage
+        )
+        for library in matched_libraries
+    ]
 
 @library_router.get('/{library_id}', response_model=LibraryResponse)
 async def get_library_by_id(library_id: int, db: Session = Depends(get_db)):

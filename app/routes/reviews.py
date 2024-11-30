@@ -4,7 +4,7 @@ from ..database.connection import get_db
 from ..models.reviews import Reviews 
 from ..models.books import Books
 from ..models.users import Users 
-from ..schemas.reviews import ReviewShorts, ReviewDetails, AddReviewRequest, ReviewKey
+from ..schemas.reviews import ReviewShorts, ReviewDetails, AddReviewRequest, ReviewUpdateRequest
 from typing import List
 from datetime import datetime
 
@@ -191,3 +191,18 @@ async def add_review(review_data: AddReviewRequest, db: Session = Depends(get_db
         nickname=new_review.users.nickname  # Assuming relationships are set
     )
 
+@review_router.put("/{isbn}/{user_id}")
+async def update_review(isbn: str, user_id: str, review: ReviewUpdateRequest, db: Session = Depends(get_db)):
+    db_review = db.query(Reviews).filter(Reviews.isbn == isbn, Reviews.user_id == user_id).first()
+    if not db_review:
+        raise HTTPException(status_code=404, detail="Review not found")
+    
+    db_review.review_title = review.review_title
+    db_review.body = review.body
+    db_review.rating = review.rating
+    db_review.likes = 0  # Reset likes to 0 on update
+    
+    db.commit()
+    db.refresh(db_review)
+    
+    return {"message": "Review updated successfully", "review": db_review}

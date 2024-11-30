@@ -5,10 +5,10 @@ from sqlalchemy import ForeignKeyConstraint
 
 class Reviews(SQLModel, table=True):
     isbn: str = Field(primary_key=True, max_length=13, foreign_key="books.isbn")
-    user_id: str = Field(primary_key=True, max_length=50, foreign_key="users.user_id")
+    user_id: str = Field(primary_key=True, max_length=50, foreign_key="users.user_id")  # Removed primary_key=True
     review_title: str = Field(nullable=False, max_length=255)
     body: str = Field(nullable=False)
-    rating: Optional[int] = Field(default=None, ge=1, le=5)  # Rating between 1 and 5
+    rating: Optional[int] = Field(default=0, ge=0, le=5)  # Rating between 0 and 5
     likes: int = Field(default=0)
     created_at: datetime = Field(default=datetime.utcnow)
 

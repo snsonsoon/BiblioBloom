@@ -107,4 +107,20 @@ export const likeReview = async (isbn, user_id) => {
   return response.data;
 };
 
+export const searchLibraries = async (libraryName) => {
+  const response = await api.get(`/libraries/search?library_name=${libraryName}`);
+  return response.data;
+};
+
+// 도서관 상세 정보 가져오기
+export const getLibraryDetails = async (library_id) => {
+  const response = await api.get(`/libraries/${library_id}`);
+  return response.data;
+};
+// 소장 도서 목록 가져오기
+export const getBooksByLibrary = async (library_id) => {
+  const response = await api.get(`/libraries/${library_id}/books`);
+  return response.data;
+};
+
 export default api;
