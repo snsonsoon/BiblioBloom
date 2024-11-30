@@ -3,7 +3,6 @@ import os
 from sqlmodel import SQLModel, Session, create_engine
 from sqlalchemy import text
 
-
 load_dotenv()
 
 USERNAME = os.environ.get('MYSQL_USERNAME')
