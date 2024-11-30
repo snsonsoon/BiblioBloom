@@ -60,7 +60,7 @@ CREATE DATABASE bibliobloom;
 ```
 
 ### 2. 환경 변수 설정
-FastAPI 백엔드에서 데이터베이스 연결을 위해 **.env 파일에 변수값을 자신 설정**의 맞게 수정합니다:
+FastAPI 백엔드에서 데이터베이스 연결을 위해 **.env 파일에 변수값을 자신 MySQL 설정**의 맞게 수정합니다:
 ```env
 MYSQL_USERNAME = your_username
 MYSQL_PASSWORD = your_password
