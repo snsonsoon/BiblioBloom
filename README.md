@@ -24,5 +24,6 @@ conda activate BiblioBloom
 ### 2. 필요한 라이브러리 설치
 requirements.txt 파일에 나열된 라이브러리를 설치합니다.
 
-```pip install -r requirements.txt
+```
+pip install -r requirements.txt
 ```
