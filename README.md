@@ -110,8 +110,8 @@ CREATE TABLE Reviews (
     likes INT DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (isbn, user_id),
-    FOREIGN KEY (isbn) REFERENCES Books(isbn),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (isbn) REFERENCES Books(isbn) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
 );
 ```
 
