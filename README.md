@@ -69,6 +69,103 @@ MYSQL_PORT = your_port
 MYSQL_DB_NAME = bibliobloom
 ```
 
+### 3. 테이블 생성
+코드의 맞는 테이블을 생성해야합니다. **MySQL에 접속하여** 아래를 실행하세요:
+```sql
+CREATE TABLE Users (
+	user_id VARCHAR(50) PRIMARY KEY UNIQUE,
+	password VARCHAR(255) NOT NULL,
+	nickname VARCHAR(50) NOT NULL
+);
+```
+
+```sql
+CREATE TABLE Books (
+    isbn CHAR(13) PRIMARY KEY,
+    book_title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    publisher VARCHAR(255) NOT NULL,
+    publication_year INT NOT NULL,
+    genre VARCHAR(50),
+    cover_image VARCHAR(255)
+);
+```
+
+```sql
+CREATE TABLE Libraries (
+    library_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    library_name VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    homepage VARCHAR(255)
+);
+```
+
+```sql
+CREATE TABLE Reviews (
+    isbn CHAR(13),
+    user_id VARCHAR(50),
+    review_title VARCHAR(255) NOT NULL,
+    body TEXT NOT NULL,
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    likes INT DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (isbn, user_id),
+    FOREIGN KEY (isbn) REFERENCES Books(isbn),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+```
+
+```sql
+CREATE TABLE BookLibraries (
+    isbn CHAR(13),
+    library_id INT,
+    availability BOOLEAN DEFAULT TRUE,
+    PRIMARY KEY (isbn, library_id),
+    FOREIGN KEY (isbn) REFERENCES Books(isbn),
+    FOREIGN KEY (library_id) REFERENCES Libraries(library_id)
+);
+```
+
+```sql
+CREATE VIEW BookStatistics AS
+SELECT
+    Books.isbn,
+    COALESCE(AVG(Reviews.rating), 0) AS average_rating,
+    COUNT(Reviews.isbn) AS total_reviews
+FROM
+    Books
+LEFT JOIN Reviews ON Books.isbn = Reviews.isbn
+GROUP BY
+    Books.isbn;
+```
+
+```sql
+CREATE VIEW UserStatistics AS
+SELECT
+	Users.user_id,
+	COALESCE(AVG(Reviews.rating), 0) AS average_rating,  -- If AVG is NULL, return 0
+	COUNT(Reviews.user_id) AS total_reviews
+FROM
+	Users
+LEFT JOIN Reviews ON Users.user_id = Reviews.user_id
+GROUP BY
+	Users.user_id;
+```
+
+```sql
+CREATE VIEW UserReviewGenres AS
+SELECT
+    Users.user_id,
+    Books.genre,
+    COUNT(Reviews.isbn) AS review_count
+FROM
+    Users
+JOIN Reviews ON Users.user_id = Reviews.user_id
+JOIN Books ON Reviews.isbn = Books.isbn
+GROUP BY
+    Users.user_id, Books.genre;
+```
+
 
 ## 실행 방법
 ### 백엔드 실행
