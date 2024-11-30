@@ -69,7 +69,6 @@ MYSQL_PORT = your_port
 MYSQL_DB_NAME = bibliobloom
 ```
 
----
 
 ## 실행 방법
 ### 백엔드 실행
@@ -88,6 +87,7 @@ npm start
 ```
 2. 애플리케이션은 기본적으로 http://localhost:3000에서 실행됩니다.
 ---
+
 
 ## 더미 데이터 삽입
 다음은 기능확인을 위한 더미데이터 삽입 SQL문입니다.
@@ -162,10 +162,12 @@ INSERT INTO booklibraries (isbn, library_id, availability) VALUES
 ```
 ---
 
+
 ## 문제 해결
 + 설치 중 문제가 발생하면 각 패키지의 공식 문서를 참조하세요.
 + 백엔드와 프론트엔드의 의존성이 충돌하지 않도록 주의하세요.
 ---
+
 
 ## 추가 자료
 + [FastAPI 공식 문서](https://fastapi.tiangolo.com/ko/)
