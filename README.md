@@ -147,7 +147,24 @@ VALUES
     ('9781861978769', 'user3', 'Great Mystery', 'A captivating mystery with unexpected twists and turns.', 4, 9, '2024-11-21 16:30:00'),
     ('9780394823573', 'user5', 'A Strategic Masterpiece', 'A brilliant book for anyone interested in strategy and leadership.', 5, 13, '2024-11-20 08:15:00'),
     ('9780743273565', 'user1', 'Fascinating Sci-Fi', 'Loved the combination of science fiction and adventure. Highly recommended!', 3, 6, '2024-11-19 12:00:00'),
-    ('9781566199094', 'user4', 'A Must-Read', 'This book helped me change my daily habits and routines for the better.', 1, 18, '2024-11-18 14:45:00');
+    ('9781566199094', 'user4', 'A Must-Read', 'This book helped me change my daily habits and routines for the better.', 1, 18, '2024-11-18 14:45:00'),
+    ('9780312541538', 'user6', 'Exploration Awaits', 'A thrilling journey that keeps you hooked till the end. Highly recommend it!', 5, 10, '2024-12-02 10:00:00'),
+    ('9780312863555', 'user6', 'Beyond the Horizon', 'An incredible adventure story. One of the best I''ve read in this genre.', 4, 8, '2024-12-03 11:30:00'),
+    ('9780321547810', 'user4', 'Cosmic Wonders', 'An inspiring read for anyone interested in space and exploration. A captivating tale!', 5, 7, '2024-12-03 13:15:00'),
+    ('9780321548893', 'user4', 'Digital Revolution', 'The book gave me valuable insights into the world of digital nomads and remote work.', 4, 5, '2024-12-04 09:45:00'),
+    ('9780375760396', 'user7', 'Historic Tales', 'A great historical narrative that brings past events to life. Truly captivating.', 4, 9, '2024-12-04 11:00:00'),
+    ('9780375870795', 'user7', 'Psychology Unpacked', 'This book offered amazing insights into human behavior and the mind. Loved it!', 5, 6, '2024-12-05 10:30:00'),
+    ('9780394823573', 'user2', 'Strategic Mastery', 'A brilliant read for anyone looking to understand strategy and leadership better.', 5, 12, '2024-12-05 14:00:00'),
+    ('9780452284234', 'user2', 'Mind Expansion', 'A fascinating book about human psychology. It completely changed how I think about life.', 4, 10, '2024-12-06 12:15:00'),
+    ('9781456732999', 'user3', 'Quantum Insights', 'Feynman’s approach to quantum mechanics is as clear as it is complex. Loved it!', 5, 11, '2024-12-06 13:45:00'),
+    ('9781456732876', 'user3', 'Alien Civilizations', 'This book opened my eyes to the possibility of extraterrestrial intelligence. Amazing!', 4, 7, '2024-12-06 14:30:00'),
+    ('9780312541538', 'user2', 'A Journey Through Time', 'An excellent read that takes you on an unforgettable adventure through history.', 5, 11, '2024-12-07 09:00:00'),
+    ('9780452298477', 'user2', 'The Power of Mind', 'A thought-provoking book on the power of positive thinking. It truly changed my outlook on life.', 4, 9, '2024-12-07 10:30:00'),
+    ('9780321547810', 'user2', 'Exploration Beyond Earth', 'An inspiring read on space exploration and humanity’s potential. A must-read for dreamers!', 5, 13, '2024-12-08 11:00:00'),
+    ('9780375870658', 'user2', 'Psychology Insights', 'This book helped me understand human behavior in a way I had never imagined before.', 4, 10, '2024-12-08 12:30:00'),
+    ('9781456732876', 'user2', 'Alien Encounters', 'An eye-opening exploration into the possibilities of alien civilizations and extraterrestrial life.', 5, 12, '2024-12-09 09:15:00'),
+    ('9780312541538', 'user3', 'An Epic Adventure', 'A thrilling and adventurous read that kept me on the edge of my seat. Highly recommended!', 5, 10, '2024-12-07 15:00:00'),
+    ('9780375760396', 'user3', 'History Comes Alive', 'A captivating historical narrative that brings the past to life in a fascinating way. Loved it!', 4, 8, '2024-12-08 13:30:00');
 ```
 ```sql
 INSERT INTO booklibraries (isbn, library_id, availability) VALUES
