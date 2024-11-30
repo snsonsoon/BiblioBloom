@@ -8,19 +8,26 @@ const api = axios.create({
 
 // 회원가입 요청
 export const signup = async (userData) => {
-  const response = await api.post("/user/signup", userData);
+  const response = await api.post("/users/signup", userData);
   return response.data;
 };
 // 로그인 요청
 export const login = async (credentials) => {
-  const response = await api.post("/user/login", credentials, { withCredentials: true });
+  const response = await api.post("/users/login", credentials, { withCredentials: true });
   return response.data;
 };
 // 로그아웃 요청
 export const logout = async () => {
-  const response = await api.post("/user/logout", {}, { withCredentials: true }); // 쿠키 삭제
+  const response = await api.post("/users/logout", {}, { withCredentials: true }); // 쿠키 삭제
   return response.data;
 };
+
+// Delete user account
+export const deleteUser = async (user_id) => {
+  const response = await api.delete(`/users/delete/${user_id}`);
+  return response.data;
+};
+
 // 사용자 리뷰 통계 API
 export const getUserReviewStatistics = async (userId) => {
   const response = await api.get(`/statistics/get_user_review_statistics/${userId}`);
@@ -97,6 +104,15 @@ export const addReview = async (reviewData) => {
   const response = await api.post("/reviews/add", reviewData);
   return response.data;
 }; 
+// Update review by sending the updated data
+export const updateReview = async (isbn, user_id, reviewData) => {
+  const response = await api.put(`/reviews/update?isbn=${isbn}&user_id=${user_id}`, reviewData);
+  return response.data;
+};
+export const deleteReview = async (isbn, user_id) => {
+  const response = await api.delete(`/reviews/delete/${isbn}/${user_id}`);
+  return response.data;
+};
 
 export const getReviewDetails = async (isbn, user_id) => {
   const response = await api.get(`/reviews/details/${isbn}/${user_id}`); // 경로 파라미터 사용
@@ -122,5 +138,7 @@ export const getBooksByLibrary = async (library_id) => {
   const response = await api.get(`/libraries/${library_id}/books`);
   return response.data;
 };
+
+
 
 export default api;

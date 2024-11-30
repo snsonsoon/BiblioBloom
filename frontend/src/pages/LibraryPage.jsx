@@ -3,6 +3,8 @@ import Navbar from "../components/Layout/Navbar";
 import { Link, useParams } from "react-router-dom";
 import { getLibraryDetails, getBooksByLibrary } from "../services/api"; // API 호출 함수
 import "./Page.css";
+import Footer from "../components/Layout/Footer";
+
 const LibraryPage = () => {
   const { id } = useParams(); // URL에서 library_id 가져오기
   const [library, setLibrary] = useState(null); // 도서관 정보 상태
@@ -78,6 +80,7 @@ const LibraryPage = () => {
           )}
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

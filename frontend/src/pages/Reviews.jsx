@@ -3,6 +3,8 @@ import Navbar from "../components/Layout/Navbar";
 import { Link } from "react-router-dom";
 import { getSortedReviews , getTopReviews} from "../services/api";
 import "./Page.css";
+import Footer from "../components/Layout/Footer";
+
 const Reviews = () => {
   const [bestReviews, setBestReviews] = useState([]); // 이달의 Best 서평
   const [allReviews, setAllReviews] = useState([]); // 전체 서평
@@ -89,6 +91,7 @@ const Reviews = () => {
           </tbody>
         </table>
       </div>
+      <Footer/>
     </div>
   );
 };

@@ -48,7 +48,7 @@ const BookInfo = ({ book, showLink = false }) => {
           )}
           <p><strong>저자:</strong> {book.author}</p>
           <p><strong>출판사:</strong> {book.publisher}</p>
-          <p><strong>출간 연도:</strong> {book.year}</p>
+          <p><strong>출간 연도:</strong> {book.publication_year}</p>
           <p><strong>분류:</strong> {book.genre}</p>
           <p>
             <strong>평점:</strong> {book.average_rating} ({book.total_reviews})

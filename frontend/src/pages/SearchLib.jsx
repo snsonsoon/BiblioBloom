@@ -3,6 +3,8 @@ import Navbar from "../components/Layout/Navbar";
 import { Link } from "react-router-dom";
 import { searchLibraries } from "../services/api"; // API 함수 불러오기
 import "./Page.css";
+import Footer from "../components/Layout/Footer";
+
 const SearchLib = () => {
   const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
   const [libraries, setLibraries] = useState([]); // 도서관 목록 상태
@@ -63,6 +65,7 @@ const SearchLib = () => {
           </div>
         )}
       </div>
+      <Footer/>
     </div>
   );
 };

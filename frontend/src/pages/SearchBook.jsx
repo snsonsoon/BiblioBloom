@@ -3,6 +3,8 @@ import Navbar from "../components/Layout/Navbar";
 import BookInfo from "../components/Cards/BookInfo";
 import { getBooks } from "../services/api"; // 도서 목록 가져오는 API 함수
 import "./Page.css";
+import Footer from "../components/Layout/Footer";
+
 const SearchBook = () => {
   const [books, setBooks] = useState([]); // 도서 목록
   const [searchTerm, setSearchTerm] = useState(""); // 검색어
@@ -74,6 +76,7 @@ const SearchBook = () => {
                 isbn: book.isbn, // 링크 생성에 필요한 id
                 book_title: book.book_title, // 제목
                 author: book.author, // 저자
+                publisher : book.publisher,
                 publication_year: book.publication_year, // 출간 연도
                 cover_image: book.cover_image, // 표지 이미지
                 average_rating: book.average_rating, // 평균 평점
@@ -85,6 +88,7 @@ const SearchBook = () => {
           ))}
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import TopReaders from "./TopReaders";
 import RecommendedBooks from "./RecommendedBooks";
 import "./Page.css";
 import Navbar from "../components/Layout/Navbar";
+import Footer from "../components/Layout/Footer";
 
 const MainPage = () => {
   return (
@@ -16,6 +17,7 @@ const MainPage = () => {
         <TopReaders />
         <RecommendedBooks />
       </div>
+      <Footer/>
     </div>
   );
 };

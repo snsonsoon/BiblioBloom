@@ -1,0 +1,27 @@
+.footer {
+    display: flex;
+    justify-content: space-between; /* 좌측과 우측 정렬 */
+    align-items: center;
+    padding: 10px 20px; /* 여백 추가 */
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #ddd;
+  }
+  
+  .copyright {
+    color: #444;
+    font-size: 14px;
+  }
+  
+  .delete-button {
+    color: rgb(112, 112, 112);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  .delete-button:hover {
+    text-decoration: underline;
+    color: rgb(163, 30, 30);
+  }

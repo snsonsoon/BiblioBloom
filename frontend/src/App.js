@@ -9,6 +9,7 @@ import SearchBook from "./pages/SearchBook";
 import BookPage from "./pages/BookPage";
 import SearchLib from "./pages/SearchLib";
 import LibraryPage from "./pages/LibraryPage";
+import DeleteAccount from "./pages/DeleteAccount";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/books/:id" element={<BookPage />} />
         <Route path="/search-lib" element={<SearchLib />} />
         <Route path="/libraries/:id" element={<LibraryPage />} />
+        <Route path="/delete-account" element={<DeleteAccount />} />
       </Routes>
     </Router>
   );

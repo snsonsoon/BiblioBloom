@@ -4,6 +4,8 @@ import Navbar from "../components/Layout/Navbar";
 import BookInfo from "../components/Cards/BookInfo";
 import { getBookDetails, getLibrariesByBook, getReviewsByBook, addReview } from "../services/api";
 import "./Page.css";
+import Footer from "../components/Layout/Footer";
+
 const BookPage = () => {
   const { id: bookId } = useParams(); // URL에서 bookId 가져오기
   const [book, setBook] = useState(null); // 책 정보
@@ -180,6 +182,7 @@ const BookPage = () => {
           )}
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };
