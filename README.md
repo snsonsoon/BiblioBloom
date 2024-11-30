@@ -14,11 +14,15 @@
 ## 백엔드 설정 (FastAPI)
 
 ### 1. 가상 환경 설정
-먼저 Python 가상 환경을 생성하고 활성화합니다.
+먼저 conda 가상 환경을 생성하고 활성화합니다.
 
 ```bash
-python -m venv venv
-# Windows
-venv\Scripts\activate
-# macOS/Linux
-source venv/bin/activate
+conda create -n BiblioBloom python=3.10
+conda activate BiblioBloom
+```
+
+### 2. 필요한 라이브러리 설치
+requirements.txt 파일에 나열된 라이브러리를 설치합니다.
+
+```pip install -r requirements.txt
+```
