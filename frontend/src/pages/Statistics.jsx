@@ -13,14 +13,27 @@ const Statistics = ({ userId: user_id }) => {
         const user_id = localStorage.getItem("user_id"); // localStorage에서 user_id 가져오기
         // 사용자 리뷰 통계 가져오기
         const userStats = await getUserReviewStatistics(user_id);
-        setReviewStats(userStats); // reviewStats 상태 업데이트
+        setReviewStats(userStats || { total_reviews: 0, percentile: 0 }); // 기본값 설정
         // 장르 비율 데이터 가져오기
-        const genreStats = await getGenreRatio(user_id);
-        const genreDataArray = Object.entries(genreStats.genre_ratio || {}).map(([name, value]) => ({
-          name, // 장르 이름
-          value, // 비율 값
-        }));
-        setGenreData(genreDataArray); // genreData 상태 업데이트
+        try {
+          const genreStats = await getGenreRatio(user_id);
+          const genreDataArray = genreStats.genre_ratio
+            ? Object.entries(genreStats.genre_ratio).map(([name, value]) => ({
+                name, // 장르 이름
+                value, // 비율 값
+              }))
+            : []; // 장르 비율 데이터가 없을 경우 빈 배열 사용
+          setGenreData(genreDataArray);
+        } catch (err) {
+          if (err.response && err.response.status === 404) {
+            // 404 에러 처리: 서평이 없을 때 "리뷰가 없습니다." 메시지 설정
+            setGenreData([]);
+          } else {
+            setError("서평 데이터를 가져오는 중 문제가 발생했습니다.");
+            console.error(err);
+          }
+        }
+
       } catch (err) {
         console.error("API 요청 중 오류:", err);
         setError("데이터를 가져오는 중 오류가 발생했습니다.");
@@ -32,31 +45,32 @@ const Statistics = ({ userId: user_id }) => {
   }, []); // 빈 배열로 두어 컴포넌트 로드 시 한 번만 실행
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>{error}</p>;
-  // 리뷰가 없는 경우 처리
-  if (!reviewStats || reviewStats.total_reviews === 0) {
-    return (
-      <div className="main-page-container">
-        <h1 className="statistics-title">나의 독서 통계</h1>
-        <div className="statistics-container">
-          <p>아직 작성한 리뷰가 없습니다. 첫 번째 리뷰를 작성해보세요!</p>
-        </div>
-      </div>
-    );
-  }
   return (
     <div className="main-page-container">
       <h1 className="statistics-title">나의 독서 통계</h1>
       <div className="statistics-container">
+        {/* 읽은 책 권수 */}
         <div className="statistics-details">
           <h2>내가 읽은 책 권수</h2>
-          <h1 className="book-count">{reviewStats.total_reviews}권</h1>
+          <h1 className="book-count">
+            {reviewStats?.total_reviews || 0}권
+          </h1>
           <p>
-            상위{" "}
-            <span className="highlight">{reviewStats.percentile.toFixed(1)}%</span>
-            입니다. 멋지네요!
+            {reviewStats.total_reviews > 0 ? (
+              <>
+                상위{" "}
+                <span className="highlight">
+                  {reviewStats.percentile.toFixed(1)}%
+                </span>{" "}
+                입니다. 멋지네요!
+              </>
+            ) : (
+              "아직 읽은 책이 없습니다."
+            )}
           </p>
         </div>
         <hr className="divider" />
+        {/* 책 DNA */}
         <div className="dna-section">
           <h2 className="dna-title">나의 책 DNA</h2>
           {genreData.length > 0 ? (
@@ -72,20 +86,18 @@ const Statistics = ({ userId: user_id }) => {
                   fill="#8884d8"
                 >
                   {genreData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
                   ))}
                 </Pie>
                 <Tooltip />
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <p>장르 데이터가 없습니다.</p>
+            <p>데이터가 없습니다. 책을 읽고 기록을 남겨보세요!</p>
           )}
-          <p>
-            그래프 위에 마우스를 올려{" "}
-            <br />
-            어떤 분야의 책을 많이 읽었는지 확인해보세요.
-          </p>
         </div>
       </div>
     </div>
