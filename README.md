@@ -35,7 +35,7 @@ conda activate BiblioBloom
 ```
 pip install -r requirements.txt
 ```
----
+
 
 ## 프론트엔드 설정 (React)
 
@@ -50,7 +50,7 @@ cd frontend
 ```bash
 npm install
 ```
----
+
 
 ## 데이터베이스 설정 (MySQL)
 ### 1. 데이터베이스 생성
