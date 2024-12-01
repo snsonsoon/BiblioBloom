@@ -71,7 +71,7 @@ MYSQL_DB_NAME = bibliobloom
 ```
 
 ### 3. 테이블 생성
-코드의 맞는 테이블을 생성해야합니다. **MySQL에 접속하여** 아래를 실행하세요:
+데이터 베이스가 배포되지 않아, 코드의 맞는 테이블을 생성해야합니다. **MySQL에 접속하여** 아래를 실행하세요:
 ```sql
 CREATE TABLE Users (
 	user_id VARCHAR(50) PRIMARY KEY UNIQUE,
