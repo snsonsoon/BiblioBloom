@@ -7,6 +7,7 @@
 - **Python 3.10**
 - **Anaconda**
 - **Node.js 22.11.0** (Node.js 설치시 컴퓨터 재부팅 필요할 수 있음)
+- **React 18.3.1**
 - **MySQL 8.0.37**
 - **npm** 또는 **yarn** (Node.js 설치 시 포함)
 
