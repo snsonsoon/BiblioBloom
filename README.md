@@ -276,6 +276,33 @@ INSERT INTO booklibraries (isbn, library_id, availability) VALUES
 ```
 ---
 
+## 추가 사항
+### 유저 생성
+```sql
+CREATE ROLE 'library_admin';
+GRANT SELECT, INSERT, UPDATE, DELETE ON bibliobloom.booklibraries TO 'library_admin';
+GRANT SELECT, INSERT, UPDATE, DELETE ON bibliobloom.books TO 'library_admin';
+GRANT SELECT, INSERT, UPDATE, DELETE ON bibliobloom.libraries TO 'library_admin';
+GRANT SELECT, INSERT, UPDATE, DELETE ON bibliobloom.reviews TO 'library_admin';
+GRANT SELECT, INSERT, UPDATE, DELETE ON bibliobloom.users TO 'library_admin';
+GRANT SELECT ON bibliobloom.bookstatistics TO 'library_admin';
+GRANT SELECT ON bibliobloom.userreviewgenres TO 'library_admin';
+GRANT SELECT ON bibliobloom.userstatistics TO 'library_admin';
+FLUSH PRIVILEGES;
+```
+```sql
+CREATE ROLE 'general_user';
+GRANT SELECT, INSERT, UPDATE, DELETE ON bibliobloom.reviews TO 'general_user';
+GRANT SELECT, INSERT, UPDATE, DELETE ON bibliobloom.users TO 'general_user';
+GRANT SELECT ON bibliobloom.booklibraries TO 'general_user';
+GRANT SELECT ON bibliobloom.books TO 'general_user';
+GRANT SELECT ON bibliobloom.libraries TO 'general_user';
+GRANT SELECT ON bibliobloom.bookstatistics TO 'general_user';
+GRANT SELECT ON bibliobloom.userreviewgenres TO 'general_user';
+GRANT SELECT ON bibliobloom.userstatistics TO 'general_user';
+FLUSH PRIVILEGES;
+```
+
 
 ## 문제 해결
 + 설치 중 문제가 발생하면 각 패키지의 공식 문서를 참조하세요.
