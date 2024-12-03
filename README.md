@@ -319,7 +319,7 @@ npm install
 
 
 ## 추가 자료
-+ [Our Figma] (https://www.figma.com/design/e2GIgNavuptPV7cHlozt2R/DB-proj_Bibliobloom?node-id=2015-2&t=dAT8tnvvE83ukAaS-1)
++ [Our Figma](https://www.figma.com/design/e2GIgNavuptPV7cHlozt2R/DB-proj_Bibliobloom?node-id=2015-2&t=dAT8tnvvE83ukAaS-1)
 + [FastAPI 공식 문서](https://fastapi.tiangolo.com/ko/)
 + [React 공식 문서](https://react.dev/)
 + [MySQL 공식 문서](https://dev.mysql.com/doc/)
