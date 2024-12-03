@@ -56,7 +56,6 @@ Bibliobloom은 **"Reading, Reviewing, and Relating"**이라는 캐치프레이�
 | 🎨 **정지우**     | 📋 프로젝트 기획 및 설계<br>🗄️ 데이터베이스 설계 전반<br>🔗 API 연동<br>🎨 UI/UX 디자인<br>💻 프론트엔드 개발<br>📝 프로젝트 문서화 및 보고서 작성 |
 
 ---
----
 
 ## ☑️ 요구 사항
 이 프로젝트를 실행하기 전에 다음 소프트웨어가 설치되어 있어야 합니다:
@@ -68,7 +67,7 @@ Bibliobloom은 **"Reading, Reviewing, and Relating"**이라는 캐치프레이�
 - **npm** 또는 **yarn** (Node.js 설치 시 포함)
 
 
-## 설치
+## 🐿️ 설치
 
 **리포지토리 클론하기**
    ```bash
@@ -109,7 +108,7 @@ npm install
 ```
 
 
-## 데이터베이스 설정 (MySQL)
+## 🗄️ 데이터베이스 설정 (MySQL)
 ### 1. 데이터베이스 생성
 **MySQL에 접속한 뒤** 데이터베이스를 생성합니다.
 ```sql
@@ -224,7 +223,7 @@ GROUP BY
 ```
 
 
-## 실행 방법
+## ▶️ 실행 방법
 ### 백엔드 실행
 
 1. **BiblioBloom 폴더에서** FastAPI 서버를 실행합니다.
@@ -243,7 +242,7 @@ npm start
 ---
 
 
-## 더미 데이터 삽입
+## 📝 더미 데이터 삽입
 다음은 기능확인을 위한 더미데이터 삽입 SQL문입니다.
 
 **순서대로 실행하세요**
@@ -332,7 +331,7 @@ INSERT INTO booklibraries (isbn, library_id, availability) VALUES
 ```
 ---
 
-## 추가 사항
+## ⚙️ 추가 사항
 ### 유저 생성
 ```sql
 CREATE ROLE 'library_admin';
