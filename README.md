@@ -5,8 +5,6 @@
 Bibliobloom은 독서를 기록하고 공유하며, 독서 문화를 풍요롭게 하는 것을 목표로 한 **도서 커뮤니티 플랫폼**입니다.  
 책(Biblio)을 통해 독서 습관과 지식을 꽃피움(Bloom)으로써, 현대인의 **독서량 감소와 문해력 저하 문제**를 해결하고자 합니다.
 
----
-
 ## 🎯 **프로젝트 개요 및 목표**
 
 ### 🔍 **프로젝트 배경**
@@ -42,7 +40,6 @@ Bibliobloom은 **"Reading, Reviewing, and Relating"** 이라는 캐치프레이�
 | 🖥️ 백엔드         | FastAPI              |
 | 💻 프론트엔드     | React                |
 
----
 
 ## 👥 **역할 분담**
 
@@ -62,6 +59,7 @@ Bibliobloom은 **"Reading, Reviewing, and Relating"** 이라는 캐치프레이�
 - **MySQL 8.0.37**
 - **npm** 또는 **yarn** (Node.js 설치 시 포함)
 
+---
 
 ## 🐿️ 설치
 
@@ -102,7 +100,7 @@ cd frontend
 ```bash
 npm install
 ```
-
+---
 
 ## 🗄️ 데이터베이스 설정 (MySQL)
 ### 1. 데이터베이스 생성
@@ -217,7 +215,7 @@ JOIN Books ON Reviews.isbn = Books.isbn
 GROUP BY
     Users.user_id, Books.genre;
 ```
-
+---
 
 ## ▶️ 실행 방법
 ### 백엔드 실행
@@ -354,7 +352,7 @@ GRANT SELECT ON bibliobloom.userstatistics TO 'general_user';
 FLUSH PRIVILEGES;
 ```
 
-
+---
 ## 📢 문제 해결
 + 설치 중 문제가 발생하면 각 패키지의 공식 문서를 참조하세요.
 + frontend 실행중 `'react-scripts'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는
@@ -365,7 +363,7 @@ rm -rf node_modules
 npm install
 ```
 + shell을 재시작 해보세요.
-+ 백엔드와 프론트엔드의 의존성이 충돌하지 않도록 주의하세요.s
++ 백엔드와 프론트엔드의 의존성이 충돌하지 않도록 주의하세요.
 ---
 
 
