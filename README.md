@@ -1,4 +1,4 @@
-# ![Bibliobloom Logo](frontend/src/assets/logo-small.png) BiblioBloom
+<img src="frontend/src/assets/logo-small.png" width="100" height="100"/> BiblioBloom
 데이터 베이스 3분반 6조 2022113138 정승원, 2022113179 정지우
 **"Reading, Reviewing, and Relating"**
 
