@@ -1,4 +1,4 @@
-# <img src="frontend/src/assets/logo-small.png" width="10" height="10"/> BiblioBloom
+# <img src="frontend/src/assets/logo-small.png" width="30" height="30"/> BiblioBloom
 
 데이터 베이스 3분반 6조 2022113138 정승원, 2022113179 정지우
 
